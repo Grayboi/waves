@@ -1,1 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waves</title>
+</head> 
+<body>
+    <input type="number" placeholder="height" id="height" max="9" value="8">
+    <input type="number" placeholder="frequency" id="frequency" value="2">
+    <input type="number" placeholder="amplitude" id="amplitude" value="1">
+    <input type="number" placeholder="wavelength" id="wavelength" value="1">
+    <div id="board">
+        <div class="pen"></div>
+    </div>
+    <style>
+        #board {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+        }
+        .pen {
+            position: absolute;
+            background-color: black;
+            height: 1rem;
+            width: 1rem;
+        }
+    </style>
+    <script>
+        tp = Math.PI * parseInt(document.getElementById('frequency').value)
+        bh = document.getElementById('board').clientHeight
+        bw = document.getElementById('board').clientWidth
 
+        function draw(){
+            tp = Math.PI * parseInt(document.getElementById('frequency').value)
+            for(i=0;i<bw;i++){
+                x=i
+                y = bh * Math.sin((tp*x) / bw) + bh
+                pen = document.getElementsByClassName('pen')[0].cloneNode()
+                pen.style.top = ((y/(10-parseInt(document.getElementById('height').value)))*parseInt(document.getElementById('amplitude').value)).toString()+'px'
+                pen.style.left = (x*parseInt(document.getElementById('wavelength').value)).toString()+'px'
+                document.getElementById('board').appendChild(pen)
+            }
+        }
+        
+        function redraw(){
+            pen = Array.from(document.getElementsByClassName('pen'))
+            pen.shift()
+            pen.forEach(el=>{
+                el.remove()
+            })
+            draw()
+        }
+
+        draw()
+
+        document.getElementById('height').addEventListener('input', ()=>{
+            redraw()
+        })
+
+        document.getElementById('frequency').addEventListener('input', ()=>{
+            redraw()
+        })
+        
+        document.getElementById('amplitude').addEventListener('input', ()=>{
+            redraw()
+        })
+
+        document.getElementById('wavelength').addEventListener('input', ()=>{
+            redraw()
+        })
+    </script>
+</body>
+</html>
